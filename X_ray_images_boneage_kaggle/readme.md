@@ -1,1 +1,1 @@
- X_ray_images_boneage_kaggle
+ X-ray images gender prediction from a kaggle dataset
