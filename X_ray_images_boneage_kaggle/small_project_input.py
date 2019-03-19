@@ -62,8 +62,12 @@ def distorted_inputs(data_dir, batch_size):
       genderlabel = labels_dic[str(image_name)]
       labels.append(genderlabel)
   os.chdir(goback_dir)
+
   # Create a queue that produces the filenames to read.
-  filename_queue = tf.train.string_input_producer(filenames)
+  #filename_queue = tf.train.string_input_producer(filenames)
+  #filename_queue = tf.convert_to_tensor(filenames)
+  filename_queue = filenames
+  #filename_queue = tf.train.string_input_producer(filenames)
 
   with tf.name_scope('data_augmentation'):
     # Read examples from files in the filename queue.
@@ -163,11 +167,15 @@ def inputs(eval_data, data_dir, batch_size):
       labels.append(genderlabel)
   os.chdir(goback_dir)
 
+  #labels = np.asarray(labels, dtype=np.int32)
+
   with tf.name_scope('input'):
     # Create a queue that produces the filenames to read.
-    filename_queue = tf.train.string_input_producer(filenames)
-
+    #filename_queue = tf.train.string_input_producer(filenames)
+    #filename_queue = tf.convert_to_tensor(filenames)
     # Read examples from files in the filename queue.
+    filename_queue = filenames
+    #filename_queue = tf.train.string_input_producer(filenames)
     read_input = read_data(filename_queue, labels)
     reshaped_image = tf.cast(read_input.uint8image, tf.float32)
 
@@ -269,12 +277,50 @@ def read_data(filename_queue, labels):
   result.width = 500
   result.depth = 1
 
-  labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-  image, label = tf.train.slice_input_producer([filename_queue, labels],
-                                                 shuffle=False)
-  image = tf.read_file(image)
-  image = tf.image.decode_image(image)
-  image /= 255.0  # normalize to [0,1] range
-  result.uint8image = image
+  tf_filenames = tf.convert_to_tensor(filename_queue, dtype=tf.string)
+  tf_labels = tf.convert_to_tensor(labels, dtype=tf.int32)
+
+  print('the shape of tf_filenames: {}'.format(tf_filenames))
+  print('the shape of tf_labels: {}'.format(tf_labels))
+
+  input_queue = tf.train.slice_input_producer([tf_filenames, tf_labels],
+                                            shuffle=False)
+
+  label = input_queue[1]
+  label = tf.reshape(label, [1])
+  #print('the shape of label: {}'.format(label))
+  #result.label = tf.cast(label, tf.int32)
+  result.label = label
+
+  #print('the shape of result.label: {}'.format(result.label))
+
+  file_contents = tf.read_file(input_queue[0])
+  result.uint8image = tf.image.decode_png(file_contents,channels=1,
+                                                dtype=tf.dtypes.uint8)
+
+  result.uint8image = tf.reshape(result.uint8image, [IMAGE_SIZE, IMAGE_SIZE, 1])
+
+  #print('the shape of result.uint8image: {}'.format(result.uint8image))
+  #labels = tf.convert_to_tensor(labels)
+  #image, label = tf.train.slice_input_producer([filename_queue, labels], shuffle=False)
+
+  #filename_queue = tf.constant(filename_queue)
+  #print('the shape of filename_queue: {}'.format(filename_queue.shape))
+  #image_bytes = IMAGE_SIZE * IMAGE_SIZE
+  #image_reader = tf.FixedLengthRecordReader(record_bytes=image_bytes)
+  #image_reader = tf.WholeFileReader()
+  #result.key, image = image_reader.read(filename_queue)
+  #result.uint8image = tf.image.decode_png(image, tf.uint8)
+  #image = tf.reshape(image, [IMAGE_SIZE, IMAGE_SIZE])
+  #result.uint8image = image
+  #filename, label= tf.data.Dataset.from_tensor_slices((filename_queue, labels))
+  #image = image / 255.0  # normalize to [0,1] range
+  #labels = tf.constant(labels)
+  #labels = tf.convert_to_tensor(labels)
+  #result.label = tf.train.slice_input_producer(labels, shuffle=False)
+  #print(labels)
+  #label_reader = tf.FixedLengthRecordReader(record_bytes=1)
+  #result.label, value = label_reader.read(labels)
+  #result.label = tf.cast(result.label, tf.int32)
 
   return result
