@@ -11,7 +11,7 @@ import numpy as np
 dir_datasheet = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset.csv'
 dir_dataset = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset'
 
-IMAGE_SIZE = 500
+IMAGE_SIZE = 64
 
 dir_batches = os.path.join(dir_dataset, 'batches')
 dir_train_batch = os.path.join(dir_batches, 'data_batch')
@@ -77,11 +77,13 @@ def get_train_batch(index_card, datasheet):
             shift_start = math.ceil( (IMAGE_SIZE - width) / 2 )
             shift_end = shift_start + width
             new_img[shift_start:shift_end, :] = resized_image
+            #new_img = new_img / 255.0
 
         elif height < IMAGE_SIZE:
             shift_start = math.ceil( (IMAGE_SIZE - height) / 2 )
             shift_end = shift_start + height
             new_img[:, shift_start:shift_end] = resized_image
+            #new_img = new_img / 255.0
 
         savingdir = dir_train_batch + '\\' + datasheet[index][0] + '.png'
         new_img = Image.fromarray(np.uint8(new_img))
@@ -117,11 +119,13 @@ def get_eval_batch(index_card, datasheet):
             shift_start = math.ceil( (IMAGE_SIZE - width) / 2 )
             shift_end = shift_start + width
             new_img[shift_start:shift_end, :] = resized_image
+            #new_img = new_img / 255.0
 
         elif height < IMAGE_SIZE:
             shift_start = math.ceil( (IMAGE_SIZE - height) / 2 )
             shift_end = shift_start + height
             new_img[:, shift_start:shift_end] = resized_image
+            #new_img = new_img / 255.0
 
         savingdir = dir_test_batch + '\\' + datasheet[index][0] + '.png'
         new_img = Image.fromarray(np.uint8(new_img))

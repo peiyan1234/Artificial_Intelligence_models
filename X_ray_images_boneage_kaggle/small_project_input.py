@@ -13,7 +13,7 @@ import numpy as np
 
 dir_datasheet = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset.csv'
 
-IMAGE_SIZE = 500
+IMAGE_SIZE = 64
 
 NUM_CLASSES = 2
 
@@ -96,7 +96,7 @@ def distorted_inputs(data_dir, batch_size):
     #                                           lower=0.2, upper=1.8)
 
     # Subtract off the mean and divide by the variance of the pixels.
-    #float_image = tf.image.per_image_standardization(distorted_image)
+    float_image = tf.image.per_image_standardization(reshaped_image)
 
     # Set the shapes of tensors.
     #float_image.set_shape([height, width, 3])
@@ -114,7 +114,7 @@ def distorted_inputs(data_dir, batch_size):
   #return _generate_image_and_label_batch(float_image, read_input.label,
     #                                     min_queue_examples, batch_size,
     #                                     shuffle=True)
-    return _generate_image_and_label_batch(reshaped_image, read_input.label,
+    return _generate_image_and_label_batch(float_image, read_input.label,
                                           min_queue_examples, batch_size,
                                           shuffle=True)
 
@@ -188,7 +188,7 @@ def inputs(eval_data, data_dir, batch_size):
     #                                                       height, width)
 
     # Subtract off the mean and divide by the variance of the pixels.
-    #float_image = tf.image.per_image_standardization(resized_image)
+    float_image = tf.image.per_image_standardization(reshaped_image)
 
     # Set the shapes of tensors.
     #float_image.set_shape([height, width, 3])
@@ -204,7 +204,7 @@ def inputs(eval_data, data_dir, batch_size):
   #return _generate_image_and_label_batch(float_image, read_input.label,
     #                                     min_queue_examples, batch_size,
     #                                     shuffle=False)
-    return _generate_image_and_label_batch(reshaped_image, read_input.label,
+    return _generate_image_and_label_batch(float_image, read_input.label,
                                           min_queue_examples, batch_size,
                                           shuffle=True)
 

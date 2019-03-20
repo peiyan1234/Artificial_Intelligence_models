@@ -29,8 +29,8 @@ def train():
     # Get images and labels for small_project.
     # Force input pipeline to CPU:0 to avoid operations sometimes ending up on
     # GPU and resulting in a slow down.
-    with tf.device('/cpu:0'):
-      images, labels = small_project.distorted_inputs()
+    #with tf.device('/cpu:0'):
+    images, labels = small_project.distorted_inputs()
       #images, labels = small_project.inputs(eval)
 
     # Build a Graph that computes the logits predictions from the
