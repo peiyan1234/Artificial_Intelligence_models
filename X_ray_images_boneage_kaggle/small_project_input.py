@@ -13,7 +13,7 @@ import numpy as np
 
 dir_datasheet = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset.csv'
 
-IMAGE_SIZE = 64
+IMAGE_SIZE = 256
 
 NUM_CLASSES = 2
 
@@ -61,6 +61,10 @@ def distorted_inputs(data_dir, batch_size):
   for image_name in glob.glob('*.png'):
       genderlabel = labels_dic[str(image_name)]
       labels.append(genderlabel)
+#      if genderlabel == 0:
+#          labels.append([0,1])
+#      elif genderlabel == 1:
+#          labels.append([1,0])
   os.chdir(goback_dir)
 
   # Create a queue that produces the filenames to read.
@@ -101,7 +105,7 @@ def distorted_inputs(data_dir, batch_size):
     # Set the shapes of tensors.
     #float_image.set_shape([height, width, 3])
     #reshaped_image.set_shape([height, width, 1])
-    read_input.label.set_shape([1])
+    #read_input.label.set_shape([1])
 
     # Ensure that the random shuffling has good mixing properties.
     min_fraction_of_examples_in_queue = 0.4
@@ -165,6 +169,10 @@ def inputs(eval_data, data_dir, batch_size):
   for image_name in glob.glob('*.png'):
       genderlabel = labels_dic[str(image_name)]
       labels.append(genderlabel)
+#      if genderlabel == 0:
+#          labels.append([0,1])
+#      elif genderlabel == 1:
+#          labels.append([1,0])
   os.chdir(goback_dir)
 
   #labels = np.asarray(labels, dtype=np.int32)
@@ -193,7 +201,7 @@ def inputs(eval_data, data_dir, batch_size):
     # Set the shapes of tensors.
     #float_image.set_shape([height, width, 3])
     #reshaped_image.set_shape([height, width, 1])
-    read_input.label.set_shape([1])
+    #read_input.label.set_shape([1])
 
     # Ensure that the random shuffling has good mixing properties.
     min_fraction_of_examples_in_queue = 0.4
@@ -287,7 +295,7 @@ def read_data(filename_queue, labels):
                                             shuffle=False)
 
   label = input_queue[1]
-  label = tf.reshape(label, [1])
+  #label = tf.reshape(label, [1])
   #print('the shape of label: {}'.format(label))
   #result.label = tf.cast(label, tf.int32)
   result.label = label

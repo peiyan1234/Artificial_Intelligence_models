@@ -11,7 +11,7 @@ import numpy as np
 dir_datasheet = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset.csv'
 dir_dataset = 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset'
 
-IMAGE_SIZE = 64
+IMAGE_SIZE = 256
 
 dir_batches = os.path.join(dir_dataset, 'batches')
 dir_train_batch = os.path.join(dir_batches, 'data_batch')

@@ -19,11 +19,11 @@ tf.app.flags.DEFINE_string('eval_data', 'test',
                            """Either 'test' or 'train_eval'.""")
 tf.app.flags.DEFINE_string('checkpoint_dir', 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset/train',
                            """Directory where to read model checkpoints.""")
-tf.app.flags.DEFINE_integer('eval_interval_secs', 60 * 5,
+tf.app.flags.DEFINE_integer('eval_interval_secs', 1,
                             """How often to run the eval.""")
 tf.app.flags.DEFINE_integer('num_examples', 2522,
                             """Number of examples to run.""")
-tf.app.flags.DEFINE_boolean('run_once', False,
+tf.app.flags.DEFINE_boolean('run_once', True,
                          """Whether to run eval only once.""")
 
 def eval_once(saver, summary_writer, top_k_op, summary_op):
