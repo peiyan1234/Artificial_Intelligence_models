@@ -14,7 +14,9 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('train_dir', 'C:/Users/Alvin.Li/Desktop/small_project/dataset/boneage-training-dataset/train',
                            """Directory where to write event logs """
                            """and checkpoint.""")
-tf.app.flags.DEFINE_integer('max_steps', 100000,
+
+                           # 315282 = 1000 epoch with a batch size 32
+tf.app.flags.DEFINE_integer('max_steps', 157642,
                             """Number of batches to run.""")
 tf.app.flags.DEFINE_boolean('log_device_placement', False,
                             """Whether to log device placement.""")
